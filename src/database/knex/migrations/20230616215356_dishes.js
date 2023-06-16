@@ -2,12 +2,14 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = knex => knex.schema.createTable('users', table => {
+exports.up = knex => knex.schema.createTable('dishes', table => {
   table.increments('id');
+  table.text('img');
   table.text('name');
-  table.text('email');
-  table.text('password')
-  table.boolean('isAdmin').notNullable().defaultTo(0)
+  table.text('category');
+  table.text('ingredients');
+  table.text('price');
+  table.text('description');
   table.timestamp('created_at').default(knex.fn.now());
   table.timestamp('updated_at').default(knex.fn.now());
 });
@@ -16,4 +18,4 @@ exports.up = knex => knex.schema.createTable('users', table => {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = knex => knex.schema.dropTable('users');
+exports.down = knex => knex.schema.dropTable('dishes');
