@@ -11,6 +11,7 @@ const uploadConfig = require('../configs/upload.js');
 const upload = multer(uploadConfig.MULTER);
 
 
-dishesRoutes.post('/',  upload.single('img'), dishesController.create);
+dishesRoutes.get('/', dishesController.listAll);
+dishesRoutes.post('/', upload.single('image'), dishesController.create);
 
 module.exports = dishesRoutes;
