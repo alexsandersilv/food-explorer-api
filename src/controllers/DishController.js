@@ -49,11 +49,9 @@ class DishController {
 
   async listAll(req, res) {
     const dish = await knex('dishes');
-    const ingredients = await knex('ingredients');
 
     return res.json({ 
-      dish,
-      ingredients
+      dish
     })
   }
 }
