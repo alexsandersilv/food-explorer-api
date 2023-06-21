@@ -10,9 +10,6 @@ function hasContent(content, message) {
     throw new AppError(message, 401);
   }
 }
-
-
-
 class DishController {
 
   async create(req, res) {
@@ -45,6 +42,14 @@ class DishController {
     } catch (error) {
       console.error(error);      
     }
+  }
+
+  async info(req, res) {
+    const { id } = req.params;
+   
+    const data = await knex('dishes').where({ id });
+
+    return res.json({ data });
   }
 
   async listAll(req, res) {

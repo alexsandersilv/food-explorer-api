@@ -12,6 +12,7 @@ const upload = multer(uploadConfig.MULTER);
 
 
 dishesRoutes.get('/', dishesController.listAll);
+dishesRoutes.get('/info/:id', dishesController.info);
 dishesRoutes.post('/', upload.single('image'), dishesController.create);
 
 module.exports = dishesRoutes;
