@@ -96,6 +96,14 @@ class DishController {
       throw new AppError(error.message, 401)      
     }
   }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    await knex('dishes').where({ id }).delete();
+
+    return res.json({ message: "OK" });
+  }
 }
 
 module.exports = DishController;
