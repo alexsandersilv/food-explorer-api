@@ -1,7 +1,6 @@
 const knex = require('../database/knex');
 
 class DishesRepository {
-
   async create({ image, name, category, ingredients, price, description }) {
     try {
       const dish = await knex('dishes').insert({

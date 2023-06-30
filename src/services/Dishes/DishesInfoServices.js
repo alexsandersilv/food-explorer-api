@@ -6,7 +6,6 @@ class DishesInfoServices {
   }
 
   async execute({ id }) {
-
     hasContent(id, 'Prato não encontrado');
     const response = await this.dishRepository.info({ id });
 

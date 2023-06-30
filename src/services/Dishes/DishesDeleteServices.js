@@ -6,7 +6,6 @@ class DishesDeleteServices {
   }
 
   async execute({ id }) {
-
     hasContent(id, 'Prato não encontrado');
     const response = await this.dishRepository.delete({ id });
 

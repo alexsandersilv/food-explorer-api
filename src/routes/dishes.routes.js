@@ -3,15 +3,13 @@ const multer = require('multer');
 
 const dishesRoutes = Router();
 
+const ensureAuthenticated = require('../middlewares/ensureAuthenticated.js');
+
 const DishController = require('../controllers/DishController');
 const dishesController = new DishController();
 
-const uploadConfig = require('../configs/upload.js');
-
 const upload = multer(uploadConfig.MULTER);
-
-const ensureAuthenticated = require('../middlewares/ensureAuthenticated.js');
-
+const uploadConfig = require('../configs/upload.js');
 
 dishesRoutes.get('/', dishesController.listAll);
 dishesRoutes.get('/info/:id', dishesController.info);

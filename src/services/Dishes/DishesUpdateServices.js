@@ -9,7 +9,6 @@ class DishesUpdateServices {
   }
 
   async execute({ id, image, name, category, ingredients, price, description }) {
-
     hasContent(id, 'Prato não encontrado');
     hasContent(image, 'Você não selecionou uma imagem');
     hasContent(name, 'Você não colocou o nome do Prato');

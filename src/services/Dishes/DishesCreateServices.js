@@ -9,7 +9,6 @@ class DishesCreateServices {
   }
 
   async execute({ image, name, category, ingredients, price, description }) {
-
     hasContent(image, 'Você não selecionou uma imagem');
     hasContent(name, 'Você não colocou o nome do Prato');
     hasContent(category, 'Você não selecionou a categoria');
