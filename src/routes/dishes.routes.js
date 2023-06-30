@@ -8,8 +8,8 @@ const ensureAuthenticated = require('../middlewares/ensureAuthenticated.js');
 const DishController = require('../controllers/DishController');
 const dishesController = new DishController();
 
-const upload = multer(uploadConfig.MULTER);
 const uploadConfig = require('../configs/upload.js');
+const upload = multer(uploadConfig.MULTER);
 
 dishesRoutes.get('/', dishesController.listAll);
 dishesRoutes.get('/info/:id', dishesController.info);
