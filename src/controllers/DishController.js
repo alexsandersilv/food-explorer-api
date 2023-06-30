@@ -1,109 +1,77 @@
 const knex = require('../database/knex');
-const AppError = require('../utils/AppError')
+const AppError = require('../utils/AppError');
 
-const DiskStorage = require('../providers/DiskStorage');
-const diskStorage = new DiskStorage();
+const DishesRepository = require('../repositories/DishesRepository');
+const DishesCreateServices = require('../services/Dishes/DishesCreateServices');
+const DishesUpdateServices = require('../services/Dishes/DishesUpdateServices');
+const DishesDeleteServices = require('../services/Dishes/DishesDeleteServices');
+const DishesInfoServices = require('../services/Dishes/DishesInfoServices');
 
-
-function hasContent(content, message) {
-  if (!content) {
-    throw new AppError(message, 401);
-  }
-}
 class DishController {
-
   async create(req, res) {
     try {
-
       const image = req.file.filename;
       const { name, category, ingredients, price, description } = req.body;
 
-      hasContent(image, 'Você não selecionou uma imagem');
-      hasContent(name, 'Você não colocou o nome do Prato');
-      hasContent(category, 'Você não selecionou a categoria');
-      hasContent(ingredients, 'Você não adicionou ingredients');
-      hasContent(price, 'Você não adicionou o preço');
-      hasContent(description, 'Você não adicionou uma descrição');
-  
-  
-      await diskStorage.saveFile(image);
-      await knex('dishes').insert({
-        img: image,
-        name,
-        category,
-        ingredients,
-        price,
-        description
-      });
+      const dishRepository = new DishesRepository();
+      const dishesCreateServices = new DishesCreateServices(dishRepository);
 
+      const response = await dishesCreateServices.execute({ image, name, category, ingredients, price, description });
 
-      
-      return res.json({ message: "OK" });
+      return res.json(response);
     } catch (error) {
-      console.error(error);      
+      console.error(error);
     }
-  }
-
-  async info(req, res) {
-    const { id } = req.params;
-   
-    const data = await knex('dishes').where({ id });
-
-    return res.json({ data });
-  }
-
-  async listAll(req, res) {
-    const dish = await knex('dishes');
-
-    return res.json({ 
-      dish
-    })
   }
 
   async update(req, res) {
     try {
-      
       const image = req.file.filename;
       const { id, name, category, ingredients, price, description } = req.body;
-
-      const dish = await knex('dishes').where({ id });
-
-      if (!dish[0]) {
-        throw new AppError('Prato não existe', 401);
-      }
       
-      const diskStorage = new DiskStorage();
-      if (dish[0].avatar) {
-        await diskStorage.deleteFile(user.avatar); 
-      }
+      const dishRepository = new DishesRepository();
+      const dishesUpdateServices = new DishesUpdateServices(dishRepository);
 
-      const filename = await diskStorage.saveFile(image);
+      const response = await dishesUpdateServices.execute({ id, image, name, category, ingredients, price, description });
 
-      dish[0].img = filename;
-      dish[0].name = name;
-      dish[0].category = category;
-      dish[0].ingredients = ingredients;
-      dish[0].price = price;
-      dish[0].description = description;
-
-      await knex('dishes').update(dish[0]).where({ id });
-
-
-      return res.json({ message: "OK" });
-
+      return res.json(response);
     } catch (error) {
-      console.log(error)
-      throw new AppError(error.message, 401)      
+      console.log(error);
+      throw new AppError(error.message, 401);
     }
   }
 
   async delete(req, res) {
     const { id } = req.params;
 
-    await knex('dishes').where({ id }).delete();
+    const dishRepository = new DishesRepository();
+    const dishesDeleteServices = new DishesDeleteServices(dishRepository);
 
-    return res.json({ message: "OK" });
+    const response = await dishesDeleteServices.execute({ id });
+
+    return res.json(response);
   }
+
+  async info(req, res) {
+    const { id } = req.params;
+
+    const dishRepository = new DishesRepository();
+    const dishesInfoServices = new DishesInfoServices(dishRepository);
+
+    const response = await dishesInfoServices.execute({ id });
+
+    return res.json({
+      ...response.data
+    });
+  }
+
+  async listAll(req, res) {
+    const dish = await knex('dishes');
+
+    return res.json({ dish });
+  }
+
+
 }
 
 module.exports = DishController;

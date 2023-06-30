@@ -7,7 +7,7 @@ const authConfig = require('../configs/auth');
 function ensureAuthenticated(req, res, next) {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader) throw new AppError('Token is required', 401);
+  if (!authHeader) throw new AppError('Token é obrigatório', 401);
 
   const [, token] = authHeader.split(' ');
 
@@ -20,7 +20,7 @@ function ensureAuthenticated(req, res, next) {
     
     return next();
   } catch {
-    throw new AppError('Token is invalid', 401);
+    throw new AppError('Token invalido', 401);
   }
 }
 
